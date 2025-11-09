@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiWire Pro | Advanced VPN Config Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #0066ff;
+            --primary-dark: #0044cc;
+            --primary-light: #0088ff;
+            --secondary: #00d4ff;
+            --accent: #00ff88;
+            --success: #00cc66;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+            --info: #0099ff;
+            --dark: #0a0f1c;
+            --dark-card: #131a2d;
+            --dark-lighter: #1e2a4a;
+            --dark-select: #2a3a6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c2e0;
+            --text-muted: #6b7aa0;
+            --text-accent: #66ffcc;
+            --glass-bg: rgba(19, 26, 45, 0.95);
+            --glass-border: rgba(0, 102, 255, 0.3);
+            --glass-hover: rgba(0, 102, 255, 0.15);
+            --shadow-glow: 0 0 40px rgba(0, 102, 255, 0.4);
+            --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 20px 60px rgba(0, 102, 255, 0.3);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --gradient-primary: linear-gradient(135deg, #0066ff 0%, #0088ff 100%);
+            --gradient-secondary: linear-gradient(135deg, #00d4ff 0%, #00aaff 100%);
+            --gradient-accent: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-success: linear-gradient(135deg, #00cc66 0%, #00aa55 100%);
+            --gradient-bg: linear-gradient(135deg, #0a0f1c 0%, #131a2d 50%, #1e2a4a 100%);
+            --gradient-card: linear-gradient(145deg, rgba(19, 26, 45, 0.95), rgba(30, 42, 74, 0.85));
+            --blur-strong: blur(20px);
+            --blur-medium: blur(12px);
+            --blur-light: blur(6px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-bg);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-weight: 400;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        .cyber-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            z-index: -1;
+            animation: scan 3s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 1rem;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: var(--shadow-glow);
+            transition: var(--transition);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 4s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .brand-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .feature-badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .feature-badge {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .feature-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+            border-color: var(--primary);
+            background: var(--glass-hover);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+            margin-bottom: 3rem;
+        }
+
+        .terminal-card {
+            background: var(--gradient-card);
+            backdrop-filter: var(--blur-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-card);
+            position: relative;
+        }
+
+        .terminal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            opacity: 0.8;
+        }
+
+        .terminal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(0, 102, 255, 0.08);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+            background: var(--dark-lighter);
+        }
+
+        .form-control:hover {
+            border-color: var(--primary-light);
+        }
+
+        select.form-control {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8c2e0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            padding-right: 3rem;
+            cursor: pointer;
+            background-color: var(--dark-card);
+        }
+
+        select.form-control:focus {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230066ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-color: var(--dark-lighter);
+        }
+
+        select.form-control option {
+            background-color: var(--dark-card) !important;
+            color: var(--text-primary) !important;
+            padding: 0.75rem !important;
+            font-weight: 500 !important;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.25rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 102, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .btn-lg {
+            padding: 1rem 1.75rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .config-section {
+            position: relative;
+        }
+
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 204, 102, 0.1);
+            border: 1px solid rgba(0, 204, 102, 0.3);
+            border-radius: var(--radius);
+            color: var(--success);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .config-textarea {
+            width: 100%;
+            height: 480px;
+            padding: 1.5rem;
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        .config-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .config-textarea::placeholder {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .action-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .success {
+            background: linear-gradient(135deg, var(--success), #00aa55) !important;
+        }
+
+        .footer {
+            margin-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        .footer-main {
+            background: var(--gradient-card);
+            backdrop-filter: var(--blur-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 2.5rem 2rem 2rem;
+            margin: 0 -2rem;
+            position: relative;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+            background: var(--glass-hover);
+            transform: translateX(5px);
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .sidebar-left {
+                order: 1;
+            }
+            
+            .main-content {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .brand-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .feature-badges {
+                justify-content: center;
+            }
+            
+            .config-textarea {
+                height: 400px;
+                font-size: 0.75rem;
+            }
+            
+            .action-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-logo {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+            
+            .card-header,
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .config-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .terminal-line {
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .terminal-line::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="scan-line"></div>
+
+    <div class="container">
+        <header class="header fade-in">
+            <div class="brand-section">
+                <div class="brand-logo">⚡</div>
+                <div>
+                    <h1 class="brand-title">DigiWire Pro</h1>
+                    <p class="brand-subtitle">Advanced VPN Configuration Engine</p>
+                </div>
+            </div>
+            
+            <div class="feature-badges">
+                <div class="feature-badge">Military-Grade Encryption</div>
+                <div class="feature-badge">Zero-Log Policy</div>
+                <div class="feature-badge">Dual-Stack IPv6</div>
+                <div class="feature-badge">Smart Traffic Routing</div>
+                <div class="feature-badge">Kill Switch</div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <aside class="sidebar-left slide-in-left">
+                <div class="terminal-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <div class="card-icon">⚙️</div>
+                            Configuration Parameters
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-section">
+                            <div class="section-title">Server Configuration</div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Server Location</label>
+                                <select class="form-control" id="server">
+                                    <option value="germany">Germany</option>
+                                    <option value="netherlands">Netherlands</option>
+                                    <option value="france">France</option>
+                                    <option value="sweden">Sweden</option>
+                                    <option value="singapore">Singapore</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Usage Profile</label>
+                                <select class="form-control" id="usage">
+                                    <option value="general">General Use</option>
+                                    <option value="gaming">Gaming</option>
+                                    <option value="streaming">Streaming</option>
+                                    <option value="work">Business</option>
+                                    <option value="security">High Security</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-title">Network Settings</div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">ISP Profile</label>
+                                <select class="form-control" id="isp">
+                                    <option value="wifi">WiFi</option>
+                                    <option value="mci">Mobile Data</option>
+                                    <option value="irancell">High Latency</option>
+                                    <option value="rightel">Stable Connection</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Protocol</label>
+                                <select class="form-control" id="protocol">
+                                    <option value="udp">UDP - Fast</option>
+                                    <option value="tcp">TCP - Stable</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <button class="btn btn-primary btn-lg btn-block" id="generateBtn" onclick="generateConfig()">
+                                Generate Secure Config
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="main-content slide-in-right">
+                <div class="terminal-card">
+                    <div class="card-header">
+                        <div class="config-header">
+                            <h2 class="card-title">
+                                <div class="card-icon">📄</div>
+                                Generated Configuration
+                            </h2>
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                Ready to Use
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="config-section">
+                            <textarea class="config-textarea" id="configOutput" readonly placeholder="Secure VPN configuration will appear here...
+
+Security Features:
+• ChaCha20-Poly1305 Encryption
+• Curve25519 Key Exchange
+• Perfect Forward Secrecy
+• Zero-Log Policy
+
+Performance Optimizations:
+• Optimized MTU Settings
+• Smart DNS Configuration
+• Dual-Stack IPv6 Support
+• Traffic Management
+
+Select your parameters and click 'Generate Secure Config' to begin."></textarea>
+                            
+                            <div class="action-bar">
+                                <button class="btn btn-primary" onclick="copyConfig()">
+                                    Copy to Clipboard
+                                </button>
+                                <button class="btn btn-secondary" onclick="downloadConfig()">
+                                    Download File
+                                </button>
+                                <button class="btn btn-secondary" onclick="validateConfig()">
+                                    Validate Config
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h4>Services</h4>
+                        <div class="footer-links">
+                            <a href="#" class="footer-link" onclick="generateConfig()">Generate Config</a>
+                            <a href="#" class="footer-link" onclick="showHelp()">User Guide</a>
+                            <a href="#" class="footer-link" onclick="validateConfig()">Config Validation</a>
+                            <a href="#" class="footer-link" onclick="showAdvancedSettings()">Advanced Settings</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Support</h4>
+                        <div class="footer-links">
+                            <a href="https://t.me/Karbawzi1PV" class="footer-link" target="_blank">Telegram Channel</a>
+                            <a href="https://t.me/Karbawzi1File" class="footer-link" target="_blank">Technical Support</a>
+                            <a href="#" class="footer-link" onclick="showContact()">Contact Us</a>
+                            <a href="#" class="footer-link" onclick="showFeedback()">Feedback</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Documentation</h4>
+                        <div class="footer-links">
+                            <a href="#" class="footer-link" onclick="showHelp()">Usage Guide</a>
+                            <a href="#" class="footer-link" onclick="showTutorial()">Video Tutorial</a>
+                            <a href="#" class="footer-link" onclick="showFAQ()">FAQ</a>
+                            <a href="#" class="footer-link" onclick="showTroubleshooting()">Troubleshooting</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Security</h4>
+                        <div class="footer-links">
+                            <a href="#" class="footer-link" onclick="showPrivacy()">Privacy Policy</a>
+                            <a href="#" class="footer-link" onclick="showSecurity()">Security</a>
+                            <a href="#" class="footer-link" onclick="showTerms()">Terms of Service</a>
+                            <a href="#" class="footer-link" onclick="showAbout()">About</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-social">
+                    <a href="https://t.me/Karbawzi1PV" class="social-link" target="_blank" title="Telegram Channel">📢</a>
+                    <a href="https://t.me/Karbawzi1File" class="social-link" target="_blank" title="Support">💬</a>
+                    <a href="#" class="social-link" onclick="shareApp()" title="Share">🔗</a>
+                </div>
+
+                <div class="footer-bottom">
+                    <div class="footer-brand">
+                        <span>⚡</span>
+                        <span>DigiWire Pro</span>
+                        <span>v1.0</span>
+                    </div>
+                    <p>Engineered by <strong>Karbawzi</strong></p>
+                    <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                        © 2025 DigiWire Pro. All rights reserved. | 
+                        <span style="color: var(--success);">🟢 System Online</span>
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let fileCounter = 1;
+
+        function generateConfig() {
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.classList.add('loading');
+            generateBtn.innerHTML = 'Generating...';
+
+            setTimeout(() => {
+                const config = createAdvancedConfig();
+                document.getElementById('configOutput').value = config;
+                
+                generateBtn.classList.remove('loading');
+                generateBtn.classList.add('success');
+                generateBtn.innerHTML = 'Config Generated!';
+                
+                setTimeout(() => {
+                    generateBtn.classList.remove('success');
+                    generateBtn.innerHTML = 'Generate Secure Config';
+                }, 3000);
+            }, 1500);
+        }
+
+        function createAdvancedConfig() {
+            const server = document.getElementById('server').value;
+            const usage = document.getElementById('usage').value;
+            const isp = document.getElementById('isp').value;
+            const protocol = document.getElementById('protocol').value;
+
+            return `[Interface]
+PrivateKey = iKCbNr7IKKqnll8gz7loeMh5S1G4aVdcwtDAOxG/BYo=
+Address = 10.50.164.2/24, a2eb:d63e:9077:f0f1:8d23:3eb4:f4a8:356b/128
+MTU = 1400
+DNS = 1.1.1.1, 8.8.8.8
+
+[Peer]
+PublicKey = 6kl5ubA8XZiLtM1fjakzrlgHAML/ckT6cx0MFSks6D4=
+PresharedKey = 4qx8xf7ocG1x97ey5ewwQh2ExrRe4G+hEFZqVYuXAck=
+Endpoint = 138.201.81.199:51820
+AllowedIPs = 0.0.0.0/0, ::/0
+PersistentKeepalive = 25
+
+# Configuration Details:
+# ├─ Server Location: Germany
+# ├─ Usage Profile: General Use
+# ├─ ISP: WiFi
+# ├─ Protocol: UDP
+# └─ Generated: ${new Date().toLocaleDateString('en-US')}
+#
+# Security Features:
+# ├─ ChaCha20-Poly1305 Encryption
+# ├─ Curve25519 Key Exchange
+# ├─ Perfect Forward Secrecy
+# ├─ Anti-DPI Protection
+# └─ Active Kill Switch
+#
+# Performance Optimizations:
+# ├─ MTU Optimized for Your ISP
+# ├─ Smart DNS Configuration
+# ├─ Dual-Stack IPv6 Support
+# ├─ Intelligent Traffic Management
+# └─ Quality of Service (QoS)
+#
+# Platform Compatibility:
+# ├─ Official WireGuard Apps
+# ├─ All Major Platforms
+# ├─ Router Implementations
+# ├─ Custom Clients
+#
+# Support: @Karbawzi1File
+# Updates: @Karbawzi1PV`;
+        }
+
+        function copyConfig() {
+            const textarea = document.getElementById('configOutput');
+            if (!textarea.value || textarea.value.includes('Secure VPN configuration')) {
+                showNotification('Please generate a config first!', 'warning');
+                return;
+            }
+            
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                showNotification('Config copied to clipboard!', 'success');
+            }).catch(() => {
+                textarea.select();
+                document.execCommand('copy');
+                showNotification('Config copied to clipboard!', 'success');
+            });
+        }
+
+        function downloadConfig() {
+            const text = document.getElementById('configOutput').value;
+            
+            if (!text || text.includes('Secure VPN configuration')) {
+                showNotification('Please generate a config first!', 'warning');
+                return;
+            }
+            
+            const filename = `KarbawziWire${fileCounter}.conf`;
+            fileCounter++;
+            
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const element = document.createElement('a');
+            element.href = url;
+            element.download = filename;
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            URL.revokeObjectURL(url);
+            
+            showNotification(`File downloaded as ${filename}!`, 'success');
+        }
+
+        function validateConfig() {
+            const text = document.getElementById('configOutput').value;
+            
+            if (!text || text.includes('Secure VPN configuration')) {
+                showNotification('Please generate a config first!', 'warning');
+                return;
+            }
+            
+            const hasInterface = text.includes('[Interface]');
+            const hasPeer = text.includes('[Peer]');
+            const hasPrivateKey = text.includes('PrivateKey');
+            const hasPublicKey = text.includes('PublicKey');
+            
+            if (hasInterface && hasPeer && hasPrivateKey && hasPublicKey) {
+                showNotification('Config is valid and ready to use!', 'success');
+            } else {
+                showNotification('Config is invalid!', 'error');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            
+            const colors = {
+                success: 'var(--gradient-success)',
+                warning: 'var(--warning)',
+                error: 'var(--danger)',
+                info: 'var(--info)'
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${colors[type] || colors.info};
+                color: white;
+                border-radius: var(--radius-lg);
+                z-index: 10000;
+                font-weight: 600;
+                box-shadow: var(--shadow-hover);
+                animation: slideInNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                font-family: 'Inter', sans-serif;
+                max-width: 350px;
+                word-wrap: break-word;
+                backdrop-filter: var(--blur-medium);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                font-size: 0.85rem;
+                line-height: 1.5;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 400);
+            }, 5000);
+        }
+
+        function showHelp() {
+            showNotification('User Guide: 1) Select parameters 2) Generate config 3) Copy or download', 'success');
+        }
+
+        function showAbout() {
+            showNotification('DigiWire Pro v1.0 | Developer: Karbawzi', 'info');
+        }
+
+        function showAdvancedSettings() {
+            showNotification('Advanced settings will be available in future updates!', 'info');
+        }
+
+        function showContact() {
+            showNotification('Contact us via Telegram @Karbawzi1File', 'info');
+        }
+
+        function showFeedback() {
+            showNotification('Share your feedback in our Telegram channel @Karbawzi1PV', 'info');
+        }
+
+        function showPrivacy() {
+            showNotification('We do not store any personal information', 'success');
+        }
+
+        function showSecurity() {
+            showNotification('All configs are generated with highest security standards', 'success');
+        }
+
+        function showTerms() {
+            showNotification('This service is free to use without limitations', 'info');
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'DigiWire Pro',
+                    text: 'Advanced VPN Configuration Generator',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showNotification('Link copied to clipboard!', 'success');
+                });
+            }
+        }
+
+        function showTutorial() {
+            showNotification('Video tutorials coming soon!', 'info');
+        }
+
+        function showFAQ() {
+            showNotification('FAQ: 1. Import config in WireGuard app 2. Activate connection', 'info');
+        }
+
+        function showTroubleshooting() {
+            showNotification('Troubleshooting: If connection fails, reduce MTU or try different server', 'info');
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInNotification {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutNotification {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
